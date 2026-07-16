@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="header-content">
@@ -20,7 +19,6 @@
                 <nav class="nav">
                     <a href="#inicio" class="nav-link active">Inicio</a>
                     <a href="#productos" class="nav-link">Mates</a>
-                    <a href="#bombillas" class="nav-link">Bombillas</a>
                     <a href="#sobre-nosotros" class="nav-link">Sobre Nosotros</a>
                     <a href="#contacto" class="nav-link">Contacto</a>
                 </nav>
@@ -37,7 +35,6 @@
         </div>
     </header>
 
-    <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-header">
             <span>Menú</span>
@@ -48,13 +45,11 @@
         <nav class="mobile-nav">
             <a href="#inicio" class="mobile-nav-link">Inicio</a>
             <a href="#productos" class="mobile-nav-link">Mates</a>
-            <a href="#bombillas" class="mobile-nav-link">Bombillas</a>
             <a href="#sobre-nosotros" class="mobile-nav-link">Sobre Nosotros</a>
             <a href="#contacto" class="mobile-nav-link">Contacto</a>
         </nav>
     </div>
 
-    <!-- Cart Sidebar -->
     <div class="cart-overlay" id="cartOverlay"></div>
     <aside class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
@@ -80,9 +75,7 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main>
-        <!-- Hero -->
         <section class="hero" id="inicio">
             <div class="hero-content">
                 <span class="hero-badge">Artesanales</span>
@@ -94,17 +87,9 @@
             </div>
         </section>
 
-        <!-- Benefits -->
         <section class="benefits">
             <div class="container">
                 <div class="benefits-grid">
-                    <div class="benefit-item">
-                        <i class="fas fa-credit-card"></i>
-                        <div>
-                            <strong>10% OFF</strong>
-                            <span>Con transferencia</span>
-                        </div>
-                    </div>
                     <div class="benefit-item">
                         <i class="fas fa-shipping-fast"></i>
                         <div>
@@ -126,39 +111,26 @@
                             <span>Materiales premium</span>
                         </div>
                     </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-handshake"></i>
+                        <div>
+                            <strong>Compra segura</strong>
+                            <span>Confianza y transparencia</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Products -->
         <section class="products" id="productos">
             <div class="container">
                 <div class="products-header">
-                    <h2>Mates</h2>
-                    <div class="products-filters">
-                        <select id="sortSelect">
-                            <option value="destacado">Destacados</option>
-                            <option value="menor">Precio: menor a mayor</option>
-                            <option value="mayor">Precio: mayor a menor</option>
-                            <option value="nombre">Nombre A-Z</option>
-                        </select>
-                    </div>
+                    <h2>Nuestros Mates</h2>
                 </div>
                 <div class="products-grid" id="productsGrid"></div>
             </div>
         </section>
 
-        <!-- Bombillas -->
-        <section class="products bombillas-section" id="bombillas">
-            <div class="container">
-                <div class="products-header">
-                    <h2>Bombillas</h2>
-                </div>
-                <div class="products-grid" id="bombillasGrid"></div>
-            </div>
-        </section>
-
-        <!-- About -->
         <section class="about" id="sobre-nosotros">
             <div class="container">
                 <div class="about-content">
@@ -175,7 +147,6 @@
             </div>
         </section>
 
-        <!-- Contact -->
         <section class="contact" id="contacto">
             <div class="container">
                 <div class="contact-content">
@@ -189,7 +160,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -197,11 +167,10 @@
                     <i class="fas fa-mug-hot"></i>
                     Quinto Mate
                 </div>
-                <p>Tu tienda de confianza para mates artesanales y bombillas de calidad premium.</p>
+                <p>Tu tienda de confianza para mates artesanales de calidad premium.</p>
                 <div class="footer-links">
                     <a href="#inicio">Inicio</a>
                     <a href="#productos">Mates</a>
-                    <a href="#bombillas">Bombillas</a>
                     <a href="#sobre-nosotros">Sobre Nosotros</a>
                     <a href="#contacto">Contacto</a>
                 </div>
@@ -210,17 +179,15 @@
                     <a href="#"><i class="fab fa-instagram"></i></a>
                     <a href="#"><i class="fab fa-tiktok"></i></a>
                 </div>
-                <p class="footer-copyright">&copy; 2024 Quinto Mate. Todos los derechos reservados.</p>
+                <p class="footer-copyright">&copy; 2025 Quinto Mate. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Float -->
     <a href="https://wa.me/542644456391" target="_blank" class="whatsapp-float">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- Toast -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage">Agregado al carrito</span>
