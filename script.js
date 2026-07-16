@@ -24,6 +24,8 @@ const closeMenuBtn = document.getElementById('closeMenuBtn');
 const productsGrid = document.getElementById('productsGrid');
 const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
 
 document.addEventListener('DOMContentLoaded', () => {
     renderProducts();
@@ -34,6 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderProducts() {
     productsGrid.innerHTML = products.map(p => productCard(p)).join('');
     document.querySelectorAll('#productsGrid .add-to-cart-btn').forEach(b => b.addEventListener('click', addToCart));
+    document.querySelectorAll('#productsGrid .product-image').forEach(img => {
+        img.addEventListener('click', e => {
+            lightboxImg.src = e.target.src;
+            lightboxImg.alt = e.target.alt;
+            lightbox.classList.add('active');
+        });
+    });
 }
 
 function productCard(p) {
@@ -156,6 +165,9 @@ function setupEvents() {
     mobileMenuBtn.addEventListener('click', toggleMobileMenu);
     closeMenuBtn.addEventListener('click', toggleMobileMenu);
     checkoutBtn.addEventListener('click', sendToWhatsApp);
+
+    lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
+    lightboxImg.addEventListener('click', e => e.stopPropagation());
 
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', e => {
