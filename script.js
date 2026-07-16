@@ -1,10 +1,10 @@
 const products = [
-    { id: 1, name: "Camionero Cuero Negro", price: 26500, img: "img/camionero-cuero-negro.jpg", badge: null, shipping: "Envío gratis", stock: 1 },
-    { id: 2, name: "Imperial Cuero Negro", price: 28500, img: "img/imperial-cuero-negro.jpg", badge: null, shipping: "Envío gratis", stock: 5 },
-    { id: 3, name: "Mate Galleta", price: 18900, img: "img/mate-galleta.jpg", badge: null, shipping: null, stock: 0 },
-    { id: 4, name: "Imperial Cuero Crudo", price: 36900, img: "img/imperial-cuero-crudo.jpg", badge: null, shipping: null, stock: 0 },
-    { id: 5, name: "Bombillón Acero Inox", price: 12900, img: "img/bombillon-acero-inox.jpg", badge: null, shipping: null, stock: 5 },
-    { id: 6, name: "Bombillón Mundial Alpaca", price: 20900, img: "img/bombillon-mundial-alpaca.jpg", badge: null, shipping: null, stock: 0 }
+    { id: 1, name: "Camionero Cuero Negro", price: 26500, img: "img/camionero-cuero-negro.jpg", badge: null, stock: 1 },
+    { id: 2, name: "Imperial Cuero Negro", price: 28500, img: "img/imperial-cuero-negro.jpg", badge: null, stock: 5 },
+    { id: 3, name: "Mate Galleta", price: 18900, img: "img/mate-galleta.jpg", badge: null, stock: 0 },
+    { id: 4, name: "Imperial Cuero Crudo", price: 36900, img: "img/imperial-cuero-crudo.jpg", badge: null, stock: 0 },
+    { id: 5, name: "Bombillón Acero Inox", price: 12900, img: "img/bombillon-acero-inox.jpg", badge: null, stock: 5 },
+    { id: 6, name: "Bombillón Mundial Alpaca", price: 20900, img: "img/bombillon-mundial-alpaca.jpg", badge: null, stock: 0 }
 ];
 
 const WHATSAPP_NUMBER = "542644456391";
@@ -50,7 +50,6 @@ function productCard(p) {
     return `
         <div class="product-card">
             ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
-            ${p.shipping ? `<span class="product-shipping">${p.shipping}</span>` : ''}
             ${outOfStock ? '<span class="product-badge" style="background:#999;left:auto;right:10px">Sin stock</span>' : ''}
             <div class="product-image"><img src="${p.img}" alt="${p.name}"></div>
             <div class="product-info">
