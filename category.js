@@ -9,8 +9,8 @@ const allProducts = [
 
 const WHATSAPP_NUMBER = "542644456391";
 let cart = JSON.parse(localStorage.getItem('quintomate_cart')) || [];
-const category = document.currentScript.dataset.category;
-const products = allProducts.filter(p => p.category === category);
+const page = window.location.pathname.split('/').pop().replace('.html', '');
+const products = allProducts.filter(p => p.category === page);
 
 const cartBtn = document.getElementById('cartBtn');
 const cartSidebar = document.getElementById('cartSidebar');
