@@ -209,12 +209,14 @@ function setupEvents() {
     document.querySelectorAll('.dropdown-link').forEach(link => {
         link.addEventListener('click', e => {
             e.preventDefault();
+            e.stopPropagation();
             filterProducts(e.currentTarget.dataset.cat);
             if (mobileMenu.classList.contains('active')) toggleMobileMenu();
         });
     });
 
     document.querySelectorAll('a[href="#productos"]').forEach(link => {
+        if (link.classList.contains('dropdown-link')) return;
         link.addEventListener('click', e => {
             e.preventDefault();
             currentFilter = 'all';
@@ -225,7 +227,8 @@ function setupEvents() {
     });
 
     document.querySelectorAll('a[href^="#"]').forEach(link => {
-        if (link.getAttribute('href') === '#productos') return;
+        const href = link.getAttribute('href');
+        if (href === '#productos') return;
         link.addEventListener('click', e => {
             e.preventDefault();
             const t = document.querySelector(link.getAttribute('href'));
