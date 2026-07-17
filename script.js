@@ -180,9 +180,9 @@ function setupEvents() {
     checkoutBtn.addEventListener('click', sendToWhatsApp);
 
     const navDropdown = document.querySelector('.nav-dropdown');
-    if (navDropdown) {
-        navDropdown.addEventListener('click', e => {
-            if (e.target.closest('.dropdown-link')) return;
+    const navToggle = document.querySelector('.nav-dropdown > .nav-link');
+    if (navDropdown && navToggle) {
+        navToggle.addEventListener('click', e => {
             e.preventDefault();
             navDropdown.classList.toggle('open');
         });
