@@ -9,7 +9,6 @@ const products = [
 
 const WHATSAPP_NUMBER = "542644456391";
 let cart = JSON.parse(localStorage.getItem('quintomate_cart')) || [];
-let currentFilter = 'all';
 
 const cartBtn = document.getElementById('cartBtn');
 const cartSidebar = document.getElementById('cartSidebar');
@@ -23,46 +22,39 @@ const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 const closeMenuBtn = document.getElementById('closeMenuBtn');
 const productsGrid = document.getElementById('productsGrid');
-const productsTitle = document.getElementById('productsTitle');
+const imperialesGrid = document.getElementById('imperialesGrid');
+const camionerosGrid = document.getElementById('camionerosGrid');
+const torpedosGrid = document.getElementById('torpedosGrid');
+const galletaGrid = document.getElementById('galletaGrid');
 const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
 
-const categories = {
-    all: 'Nuestros Mates',
-    imperiales: 'Imperiales',
-    camioneros: 'Camioneros',
-    torpedos: 'Torpedos',
-    galleta: 'Galleta',
-    bombillones: 'Bombillones'
-};
-
 document.addEventListener('DOMContentLoaded', () => {
-    renderProducts();
+    renderAll();
     updateCart();
     setupEvents();
 });
 
-function renderProducts() {
-    const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
-    productsTitle.textContent = categories[currentFilter] || 'Nuestros Mates';
-    productsGrid.innerHTML = filtered.map(p => productCard(p)).join('');
+function renderAll() {
+    renderGrid(productsGrid, products);
+    renderGrid(imperialesGrid, products.filter(p => p.category === 'imperiales'));
+    renderGrid(camionerosGrid, products.filter(p => p.category === 'camioneros'));
+    renderGrid(torpedosGrid, products.filter(p => p.category === 'torpedos'));
+    renderGrid(galletaGrid, products.filter(p => p.category === 'galleta'));
+}
 
-    document.querySelectorAll('#productsGrid .product-card-btn').forEach(b => b.addEventListener('click', handleProductBtn));
-    document.querySelectorAll('#productsGrid .product-image').forEach(img => {
+function renderGrid(grid, list) {
+    grid.innerHTML = list.map(p => productCard(p)).join('');
+    grid.querySelectorAll('.product-card-btn').forEach(b => b.addEventListener('click', e => addToCart(parseInt(e.currentTarget.dataset.id))));
+    grid.querySelectorAll('.product-image').forEach(img => {
         img.addEventListener('click', e => {
             lightboxImg.src = e.target.src;
             lightboxImg.alt = e.target.alt;
             lightbox.classList.add('active');
         });
     });
-}
-
-function filterProducts(cat) {
-    currentFilter = cat;
-    renderProducts();
-    document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
 }
 
 function productCard(p) {
@@ -98,10 +90,6 @@ function productCard(p) {
         </div>`;
 }
 
-function handleProductBtn(e) {
-    addToCart(parseInt(e.currentTarget.dataset.id));
-}
-
 function addToCart(id) {
     const product = products.find(p => p.id === id);
     const inCart = cart.find(i => i.id === id);
@@ -109,7 +97,7 @@ function addToCart(id) {
     if (currentQty >= product.stock) { showToast('No hay más stock'); return; }
     inCart ? inCart.quantity++ : cart.push({ ...product, quantity: 1 });
     saveCart();
-    renderProducts();
+    renderAll();
     updateCart();
     showToast('Agregado al carrito');
 }
@@ -117,7 +105,7 @@ function addToCart(id) {
 function removeFromCart(id) {
     cart = cart.filter(i => i.id !== id);
     saveCart();
-    renderProducts();
+    renderAll();
     updateCart();
 }
 
@@ -129,7 +117,7 @@ function updateQuantity(id, change) {
         if (item.quantity <= 0) { removeFromCart(id); return; }
         if (item.quantity > product.stock) { item.quantity = product.stock; showToast('Stock máximo alcanzado'); }
         saveCart();
-        renderProducts();
+        renderAll();
         updateCart();
     }
 }
@@ -206,29 +194,7 @@ function setupEvents() {
     lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
     lightboxImg.addEventListener('click', e => e.stopPropagation());
 
-    document.querySelectorAll('.dropdown-link').forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            e.stopPropagation();
-            filterProducts(e.currentTarget.dataset.cat);
-            if (mobileMenu.classList.contains('active')) toggleMobileMenu();
-        });
-    });
-
-    document.querySelectorAll('a[href="#productos"]').forEach(link => {
-        if (link.classList.contains('dropdown-link')) return;
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            currentFilter = 'all';
-            renderProducts();
-            document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
-            if (mobileMenu.classList.contains('active')) toggleMobileMenu();
-        });
-    });
-
     document.querySelectorAll('a[href^="#"]').forEach(link => {
-        const href = link.getAttribute('href');
-        if (href === '#productos') return;
         link.addEventListener('click', e => {
             e.preventDefault();
             const t = document.querySelector(link.getAttribute('href'));
