@@ -23,18 +23,20 @@ const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 const closeMenuBtn = document.getElementById('closeMenuBtn');
 const productsGrid = document.getElementById('productsGrid');
+const productsTitle = document.getElementById('productsTitle');
 const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
 
-const mateCategories = [
-    { id: 'all', label: 'Todos' },
-    { id: 'imperiales', label: 'Imperiales' },
-    { id: 'camioneros', label: 'Camioneros' },
-    { id: 'torpedos', label: 'Torpedos' },
-    { id: 'galleta', label: 'Galleta' }
-];
+const categories = {
+    all: 'Nuestros Mates',
+    imperiales: 'Imperiales',
+    camioneros: 'Camioneros',
+    torpedos: 'Torpedos',
+    galleta: 'Galleta',
+    bombillones: 'Bombillones'
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     renderProducts();
@@ -44,17 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function renderProducts() {
     const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+    productsTitle.textContent = categories[currentFilter] || 'Nuestros Mates';
+    productsGrid.innerHTML = filtered.map(p => productCard(p)).join('');
 
-    const filtersHTML = `<div class="category-filters">${mateCategories.map(c =>
-        `<button class="filter-btn ${currentFilter === c.id ? 'active' : ''}" data-cat="${c.id}">${c.label}</button>`
-    ).join('')}</div>`;
-
-    productsGrid.innerHTML = filtersHTML + `<div class="products-grid-inner">${filtered.map(p => productCard(p)).join('')}</div>`;
-
-    document.querySelectorAll('.filter-btn').forEach(b => b.addEventListener('click', e => {
-        currentFilter = e.currentTarget.dataset.cat;
-        renderProducts();
-    }));
     document.querySelectorAll('#productsGrid .product-card-btn').forEach(b => b.addEventListener('click', handleProductBtn));
     document.querySelectorAll('#productsGrid .product-image').forEach(img => {
         img.addEventListener('click', e => {
@@ -63,6 +57,12 @@ function renderProducts() {
             lightbox.classList.add('active');
         });
     });
+}
+
+function filterProducts(cat) {
+    currentFilter = cat;
+    renderProducts();
+    document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
 }
 
 function productCard(p) {
@@ -99,8 +99,7 @@ function productCard(p) {
 }
 
 function handleProductBtn(e) {
-    const id = parseInt(e.currentTarget.dataset.id);
-    addToCart(id);
+    addToCart(parseInt(e.currentTarget.dataset.id));
 }
 
 function addToCart(id) {
@@ -168,11 +167,9 @@ function sendToWhatsApp() {
     if (cart.length === 0) { showToast('Tu carrito está vacío'); return; }
 
     let msg = `🛒 *¡Hola! Quiero hacer un pedido*\n\n📦 *Productos:*\n`;
-
     cart.forEach(item => {
         msg += `• ${item.name}\n  Cant: ${item.quantity} | $${(item.price * item.quantity).toLocaleString('es-AR')}\n`;
     });
-
     const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
     msg += `\n💰 *Total: $${total.toLocaleString('es-AR')}*\n`;
     msg += `\n_Medio de pago a coordinar_`;
@@ -209,7 +206,26 @@ function setupEvents() {
     lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
     lightboxImg.addEventListener('click', e => e.stopPropagation());
 
+    document.querySelectorAll('.dropdown-link').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            filterProducts(e.currentTarget.dataset.cat);
+            if (mobileMenu.classList.contains('active')) toggleMobileMenu();
+        });
+    });
+
+    document.querySelectorAll('a[href="#productos"]').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            currentFilter = 'all';
+            renderProducts();
+            document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
+            if (mobileMenu.classList.contains('active')) toggleMobileMenu();
+        });
+    });
+
     document.querySelectorAll('a[href^="#"]').forEach(link => {
+        if (link.getAttribute('href') === '#productos') return;
         link.addEventListener('click', e => {
             e.preventDefault();
             const t = document.querySelector(link.getAttribute('href'));
@@ -220,8 +236,8 @@ function setupEvents() {
     document.addEventListener('click', e => {
         const btn = e.target.closest('.qty-btn-card');
         if (!btn) return;
-        const id = parseInt(btn.dataset.id);
         const action = btn.dataset.action;
+        const id = parseInt(btn.dataset.id);
         if (action === 'plus') addToCart(id);
         else if (action === 'minus') updateQuantity(id, -1);
     });

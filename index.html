@@ -18,7 +18,15 @@
                 </a>
                 <nav class="nav">
                     <a href="#inicio" class="nav-link active">Inicio</a>
-                    <a href="#productos" class="nav-link">Mates</a>
+                    <div class="nav-dropdown">
+                        <a href="#productos" class="nav-link">Mates <i class="fas fa-chevron-down" style="font-size:0.6rem;margin-left:4px"></i></a>
+                        <div class="dropdown-menu">
+                            <a href="#productos" class="dropdown-link" data-cat="imperiales">Imperiales</a>
+                            <a href="#productos" class="dropdown-link" data-cat="camioneros">Camioneros</a>
+                            <a href="#productos" class="dropdown-link" data-cat="torpedos">Torpedos</a>
+                            <a href="#productos" class="dropdown-link" data-cat="galleta">Galleta</a>
+                        </div>
+                    </div>
                     <a href="#sobre-nosotros" class="nav-link">Sobre Nosotros</a>
                     <a href="#contacto" class="nav-link">Contacto</a>
                 </nav>
@@ -44,7 +52,11 @@
         </div>
         <nav class="mobile-nav">
             <a href="#inicio" class="mobile-nav-link">Inicio</a>
-            <a href="#productos" class="mobile-nav-link">Mates</a>
+            <a href="#productos" class="mobile-nav-link">Todos los Mates</a>
+            <a href="#productos" class="mobile-nav-link dropdown-link" data-cat="imperiales">Imperiales</a>
+            <a href="#productos" class="mobile-nav-link dropdown-link" data-cat="camioneros">Camioneros</a>
+            <a href="#productos" class="mobile-nav-link dropdown-link" data-cat="torpedos">Torpedos</a>
+            <a href="#productos" class="mobile-nav-link dropdown-link" data-cat="galleta">Galleta</a>
             <a href="#sobre-nosotros" class="mobile-nav-link">Sobre Nosotros</a>
             <a href="#contacto" class="mobile-nav-link">Contacto</a>
         </nav>
@@ -125,7 +137,7 @@
         <section class="products" id="productos">
             <div class="container">
                 <div class="products-header">
-                    <h2>Nuestros Mates</h2>
+                    <h2 id="productsTitle">Nuestros Mates</h2>
                 </div>
                 <div class="products-grid" id="productsGrid"></div>
             </div>
