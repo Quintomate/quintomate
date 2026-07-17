@@ -12,13 +12,11 @@
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <a href="index.html" class="logo">
-                    🧉 Quinto Mate
-                </a>
+                <a href="index.html" class="logo">🧉 Quinto Mate</a>
                 <nav class="nav">
                     <a href="index.html" class="nav-link">Inicio</a>
                     <div class="nav-dropdown">
-                        <a href="index.html#productos" class="nav-link">Mates <i class="fas fa-chevron-down" style="font-size:0.6rem;margin-left:4px"></i></a>
+                        <a href="index.html#productos" class="nav-link active">Mates <i class="fas fa-chevron-down" style="font-size:0.6rem;margin-left:4px"></i></a>
                         <div class="dropdown-menu">
                             <a href="imperiales.html" class="dropdown-link">Imperiales</a>
                             <a href="camioneros.html" class="dropdown-link">Camioneros</a>
@@ -26,28 +24,19 @@
                             <a href="galleta.html" class="dropdown-link">Galleta</a>
                         </div>
                     </div>
-                    <a href="bombillones.html" class="nav-link active">Bombillones</a>
+                    <a href="bombillones.html" class="nav-link">Bombillones</a>
                     <a href="index.html#sobre-nosotros" class="nav-link">Sobre Nosotros</a>
                     <a href="index.html#contacto" class="nav-link">Contacto</a>
                 </nav>
                 <div class="header-actions">
-                    <button class="cart-btn" id="cartBtn" aria-label="Carrito">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-count" id="cartCount">0</span>
-                    </button>
-                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menú">
-                        <i class="fas fa-bars"></i>
-                    </button>
+                    <button class="cart-btn" id="cartBtn" aria-label="Carrito"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></button>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menú"><i class="fas fa-bars"></i></button>
                 </div>
             </div>
         </div>
     </header>
-
     <div class="mobile-menu" id="mobileMenu">
-        <div class="mobile-menu-header">
-            <span>Menú</span>
-            <button class="close-menu-btn" id="closeMenuBtn"><i class="fas fa-times"></i></button>
-        </div>
+        <div class="mobile-menu-header"><span>Menú</span><button class="close-menu-btn" id="closeMenuBtn"><i class="fas fa-times"></i></button></div>
         <nav class="mobile-nav">
             <a href="index.html" class="mobile-nav-link">Inicio</a>
             <a href="index.html#productos" class="mobile-nav-link">Todos los Mates</a>
@@ -60,67 +49,37 @@
             <a href="index.html#contacto" class="mobile-nav-link">Contacto</a>
         </nav>
     </div>
-
     <div class="cart-overlay" id="cartOverlay"></div>
     <aside class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h3><i class="fas fa-shopping-cart"></i> Tu Carrito</h3>
-            <button class="close-cart-btn" id="closeCartBtn"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <div class="cart-empty"><i class="fas fa-shopping-cart"></i><p>Tu carrito está vacío</p></div>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total"><span>Total:</span><span id="cartTotal">$0</span></div>
-            <button class="checkout-btn" id="checkoutBtn"><i class="fab fa-whatsapp"></i> Enviar Pedido por WhatsApp</button>
-        </div>
+        <div class="cart-header"><h3><i class="fas fa-shopping-cart"></i> Tu Carrito</h3><button class="close-cart-btn" id="closeCartBtn"><i class="fas fa-times"></i></button></div>
+        <div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fas fa-shopping-cart"></i><p>Tu carrito está vacío</p></div></div>
+        <div class="cart-footer"><div class="cart-total"><span>Total:</span><span id="cartTotal">$0</span></div><button class="checkout-btn" id="checkoutBtn"><i class="fab fa-whatsapp"></i> Enviar Pedido por WhatsApp</button></div>
     </aside>
-
     <main>
         <section class="products" style="padding-top:30px">
             <div class="container">
                 <div class="products-header">
                     <h2>Bombillones</h2>
-                    <div class="products-filters">
-                        <select id="sortSelect">
-                            <option value="default">Ordenar por</option>
-                            <option value="price-asc">Precio: menor a mayor</option>
-                            <option value="price-desc">Precio: mayor a menor</option>
-                            <option value="newest">Más nuevo</option>
-                            <option value="oldest">Más viejo</option>
-                        </select>
-                    </div>
+                    <div class="products-filters"><select id="sortSelect"><option value="default">Ordenar por</option><option value="price-asc">Precio: menor a mayor</option><option value="price-desc">Precio: mayor a menor</option><option value="newest">Más nuevo</option><option value="oldest">Más viejo</option></select></div>
                 </div>
                 <div class="products-grid" id="productsGrid"></div>
             </div>
         </section>
     </main>
-
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">🧉 Quinto Mate</div>
                 <p>Tu tienda de confianza para mates artesanales de calidad premium.</p>
-                <div class="footer-links">
-                    <a href="index.html">Inicio</a>
-                    <a href="index.html#productos">Mates</a>
-                    <a href="index.html#sobre-nosotros">Sobre Nosotros</a>
-                    <a href="index.html#contacto">Contacto</a>
-                </div>
-                <div class="footer-social">
-                    <a href="https://wa.me/542644456391" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
-                </div>
+                <div class="footer-links"><a href="index.html">Inicio</a><a href="index.html#productos">Mates</a><a href="index.html#sobre-nosotros">Sobre Nosotros</a><a href="index.html#contacto">Contacto</a></div>
+                <div class="footer-social"><a href="https://wa.me/542644456391" target="_blank"><i class="fab fa-whatsapp"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div>
                 <p class="footer-copyright">&copy; 2025 Quinto Mate. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
-
     <a href="https://wa.me/542644456391" target="_blank" class="whatsapp-float"><i class="fab fa-whatsapp"></i></a>
     <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMessage">Agregado al carrito</span></div>
     <div class="lightbox" id="lightbox"><span class="lightbox-close">&times;</span><img src="" alt="" id="lightboxImg"></div>
-
-    <script src="category.js" data-category="bombillones"></script>
+    <script src="category.js"></script>
 </body>
 </html>
