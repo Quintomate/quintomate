@@ -23,30 +23,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenu = document.getElementById('mobileMenu');
     const closeMenuBtn = document.getElementById('closeMenuBtn');
     const productsGrid = document.getElementById('productsGrid');
-    const bombillonesGrid = document.getElementById('bombillonesGrid');
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
 
-    const mates = products.filter(p => p.category !== 'bombillones');
-    const bombillones = products.filter(p => p.category === 'bombillones');
-
-    function renderGrid(grid, list) {
-        grid.innerHTML = list.map(p => productCard(p)).join('');
-        grid.querySelectorAll('.product-card-btn').forEach(b => b.addEventListener('click', e => addToCart(parseInt(e.currentTarget.dataset.id))));
-        grid.querySelectorAll('.product-image').forEach(img => {
+    function renderAll() {
+        productsGrid.innerHTML = products.map(p => productCard(p)).join('');
+        productsGrid.querySelectorAll('.product-card-btn').forEach(b => b.addEventListener('click', e => addToCart(parseInt(e.currentTarget.dataset.id))));
+        productsGrid.querySelectorAll('.product-image').forEach(img => {
             img.addEventListener('click', e => {
                 lightboxImg.src = e.target.src;
                 lightboxImg.alt = e.target.alt;
                 lightbox.classList.add('active');
             });
         });
-    }
-
-    function renderAll() {
-        renderGrid(productsGrid, mates);
-        if (bombillonesGrid) renderGrid(bombillonesGrid, bombillones);
     }
 
     function productCard(p) {
