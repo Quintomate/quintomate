@@ -3,7 +3,7 @@ const products = [
     { id: 2, name: "Imperial Cuero Negro", price: 28500, img: "img/imperial-cuero-negro.jpg", badge: null, stock: 5, category: "imperiales", order: 2 },
     { id: 3, name: "Mate Galleta", price: 20900, img: "img/mate-galleta.jpg", badge: null, stock: 0, category: "galleta", order: 3 },
     { id: 4, name: "Imperial Cuero Crudo", price: 36900, img: "img/imperial-cuero-crudo.jpg", badge: null, stock: 0, category: "imperiales", order: 4 },
-    { id: 5, name: "Bombillón Acero Inox", price: 14000, img: "img/bombillon-acero-inox.jpg", badge: null, stock: 4, category: "bombillones", order: 5 },
+    { id: 5, name: "Bombillón Acero Inox", price: 8000, img: "img/bombillon-acero-inox.jpg", badge: null, stock: 4, category: "bombillones", order: 5 },
     { id: 6, name: "Bombillón Mundial Alpaca", price: 20900, img: "img/bombillon-mundial-alpaca.jpg", badge: null, stock: 1, category: "bombillones", order: 6 }
 ];
 
