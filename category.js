@@ -1,4 +1,4 @@
-const products = [
+const allProducts = [
     { id: 1, name: "Camionero Cuero Negro", price: 26500, img: "img/camionero-cuero-negro.jpg", badge: null, stock: 1, category: "camioneros", order: 1 },
     { id: 2, name: "Imperial Cuero Negro", price: 28500, img: "img/imperial-cuero-negro.jpg", badge: null, stock: 5, category: "imperiales", order: 2 },
     { id: 3, name: "Mate Galleta", price: 20900, img: "img/mate-galleta.jpg", badge: null, stock: 0, category: "galleta", order: 3 },
@@ -9,6 +9,8 @@ const products = [
 
 const WHATSAPP_NUMBER = "542644456391";
 let cart = JSON.parse(localStorage.getItem('quintomate_cart')) || [];
+const category = document.currentScript.dataset.category;
+const products = allProducts.filter(p => p.category === category);
 
 const cartBtn = document.getElementById('cartBtn');
 const cartSidebar = document.getElementById('cartSidebar');
@@ -22,6 +24,7 @@ const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 const closeMenuBtn = document.getElementById('closeMenuBtn');
 const productsGrid = document.getElementById('productsGrid');
+const sortSelect = document.getElementById('sortSelect');
 const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
 const lightbox = document.getElementById('lightbox');
@@ -33,8 +36,22 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEvents();
 });
 
+function sortProducts(list, sortBy) {
+    const sorted = [...list];
+    switch (sortBy) {
+        case 'price-asc': sorted.sort((a, b) => a.price - b.price); break;
+        case 'price-desc': sorted.sort((a, b) => b.price - a.price); break;
+        case 'newest': sorted.sort((a, b) => a.order - b.order); break;
+        case 'oldest': sorted.sort((a, b) => b.order - a.order); break;
+    }
+    return sorted;
+}
+
 function renderProducts() {
-    productsGrid.innerHTML = products.map(p => productCard(p)).join('');
+    const sortBy = sortSelect.value;
+    const sorted = sortBy === 'default' ? products : sortProducts(products, sortBy);
+    productsGrid.innerHTML = sorted.map(p => productCard(p)).join('');
+
     productsGrid.querySelectorAll('.product-card-btn').forEach(b => b.addEventListener('click', e => addToCart(parseInt(e.currentTarget.dataset.id))));
     productsGrid.querySelectorAll('.product-image').forEach(img => {
         img.addEventListener('click', e => {
@@ -79,7 +96,7 @@ function productCard(p) {
 }
 
 function addToCart(id) {
-    const product = products.find(p => p.id === id);
+    const product = allProducts.find(p => p.id === id);
     const inCart = cart.find(i => i.id === id);
     const currentQty = inCart ? inCart.quantity : 0;
     if (currentQty >= product.stock) { showToast('No hay más stock'); return; }
@@ -99,7 +116,7 @@ function removeFromCart(id) {
 
 function updateQuantity(id, change) {
     const item = cart.find(i => i.id === id);
-    const product = products.find(p => p.id === id);
+    const product = allProducts.find(p => p.id === id);
     if (item) {
         item.quantity += change;
         if (item.quantity <= 0) { removeFromCart(id); return; }
@@ -141,7 +158,6 @@ function updateCart() {
 
 function sendToWhatsApp() {
     if (cart.length === 0) { showToast('Tu carrito está vacío'); return; }
-
     let msg = `🛒 *¡Hola! Quiero hacer un pedido*\n\n📦 *Productos:*\n`;
     cart.forEach(item => {
         msg += `• ${item.name}\n  Cant: ${item.quantity} | $${(item.price * item.quantity).toLocaleString('es-AR')}\n`;
@@ -149,7 +165,6 @@ function sendToWhatsApp() {
     const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
     msg += `\n💰 *Total: $${total.toLocaleString('es-AR')}*\n`;
     msg += `\n_Medio de pago a coordinar_`;
-
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
     showToast('Abriendo WhatsApp...');
 }
@@ -178,17 +193,10 @@ function setupEvents() {
     mobileMenuBtn.addEventListener('click', toggleMobileMenu);
     closeMenuBtn.addEventListener('click', toggleMobileMenu);
     checkoutBtn.addEventListener('click', sendToWhatsApp);
+    sortSelect.addEventListener('change', renderProducts);
 
     lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
     lightboxImg.addEventListener('click', e => e.stopPropagation());
-
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            const t = document.querySelector(link.getAttribute('href'));
-            if (t) { t.scrollIntoView({ behavior: 'smooth' }); if (mobileMenu.classList.contains('active')) toggleMobileMenu(); }
-        });
-    });
 
     document.addEventListener('click', e => {
         const btn = e.target.closest('.qty-btn-card');
