@@ -1,14 +1,15 @@
 const products = [
-    { id: 1, name: "Camionero Cuero Negro", price: 26500, img: "img/camionero-cuero-negro.jpg", badge: null, stock: 1 },
-    { id: 2, name: "Imperial Cuero Negro", price: 28500, img: "img/imperial-cuero-negro.jpg", badge: null, stock: 5 },
-    { id: 3, name: "Mate Galleta", price: 20900, img: "img/mate-galleta.jpg", badge: null, stock: 0 },
-    { id: 4, name: "Imperial Cuero Crudo", price: 36900, img: "img/imperial-cuero-crudo.jpg", badge: null, stock: 0 },
-    { id: 5, name: "Bombillón Acero Inox", price: 14000, img: "img/bombillon-acero-inox.jpg", badge: null, stock: 5 },
-    { id: 6, name: "Bombillón Mundial Alpaca", price: 20900, img: "img/bombillon-mundial-alpaca.jpg", badge: null, stock: 0 }
+    { id: 1, name: "Camionero Cuero Negro", price: 26500, img: "img/camionero-cuero-negro.jpg", badge: null, stock: 1, category: "camioneros" },
+    { id: 2, name: "Imperial Cuero Negro", price: 28500, img: "img/imperial-cuero-negro.jpg", badge: null, stock: 5, category: "imperiales" },
+    { id: 3, name: "Mate Galleta", price: 20900, img: "img/mate-galleta.jpg", badge: null, stock: 0, category: "galleta" },
+    { id: 4, name: "Imperial Cuero Crudo", price: 36900, img: "img/imperial-cuero-crudo.jpg", badge: null, stock: 0, category: "imperiales" },
+    { id: 5, name: "Bombillón Acero Inox", price: 14000, img: "img/bombillon-acero-inox.jpg", badge: null, stock: 5, category: "bombillones" },
+    { id: 6, name: "Bombillón Mundial Alpaca", price: 20900, img: "img/bombillon-mundial-alpaca.jpg", badge: null, stock: 0, category: "bombillones" }
 ];
 
 const WHATSAPP_NUMBER = "542644456391";
 let cart = JSON.parse(localStorage.getItem('quintomate_cart')) || [];
+let currentFilter = 'all';
 
 const cartBtn = document.getElementById('cartBtn');
 const cartSidebar = document.getElementById('cartSidebar');
@@ -22,21 +23,56 @@ const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 const closeMenuBtn = document.getElementById('closeMenuBtn');
 const productsGrid = document.getElementById('productsGrid');
+const bombillasGrid = document.getElementById('bombillasGrid');
 const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightboxImg');
 
+const mateCategories = [
+    { id: 'all', label: 'Todos' },
+    { id: 'imperiales', label: 'Imperiales' },
+    { id: 'camioneros', label: 'Camioneros' },
+    { id: 'torpedos', label: 'Torpedos' },
+    { id: 'galleta', label: 'Galleta' }
+];
+
 document.addEventListener('DOMContentLoaded', () => {
     renderProducts();
+    renderBombillas();
     updateCart();
     setupEvents();
 });
 
 function renderProducts() {
-    productsGrid.innerHTML = products.map(p => productCard(p)).join('');
+    const mates = products.filter(p => p.category !== 'bombillones');
+    const filtered = currentFilter === 'all' ? mates : mates.filter(p => p.category === currentFilter);
+
+    const filtersHTML = `<div class="category-filters">${mateCategories.map(c =>
+        `<button class="filter-btn ${currentFilter === c.id ? 'active' : ''}" data-cat="${c.id}">${c.label}</button>`
+    ).join('')}</div>`;
+
+    productsGrid.innerHTML = filtersHTML + `<div class="products-grid-inner">${filtered.map(p => productCard(p)).join('')}</div>`;
+
+    document.querySelectorAll('.filter-btn').forEach(b => b.addEventListener('click', e => {
+        currentFilter = e.currentTarget.dataset.cat;
+        renderProducts();
+    }));
     document.querySelectorAll('#productsGrid .product-card-btn').forEach(b => b.addEventListener('click', handleProductBtn));
     document.querySelectorAll('#productsGrid .product-image').forEach(img => {
+        img.addEventListener('click', e => {
+            lightboxImg.src = e.target.src;
+            lightboxImg.alt = e.target.alt;
+            lightbox.classList.add('active');
+        });
+    });
+}
+
+function renderBombillas() {
+    const bombillones = products.filter(p => p.category === 'bombillones');
+    bombillasGrid.innerHTML = bombillones.map(p => productCard(p)).join('');
+    document.querySelectorAll('#bombillasGrid .product-card-btn').forEach(b => b.addEventListener('click', handleProductBtn));
+    document.querySelectorAll('#bombillasGrid .product-image').forEach(img => {
         img.addEventListener('click', e => {
             lightboxImg.src = e.target.src;
             lightboxImg.alt = e.target.alt;
@@ -79,8 +115,7 @@ function productCard(p) {
 }
 
 function handleProductBtn(e) {
-    const btn = e.currentTarget;
-    const id = parseInt(btn.dataset.id);
+    const id = parseInt(e.currentTarget.dataset.id);
     addToCart(id);
 }
 
@@ -92,6 +127,7 @@ function addToCart(id) {
     inCart ? inCart.quantity++ : cart.push({ ...product, quantity: 1 });
     saveCart();
     renderProducts();
+    renderBombillas();
     updateCart();
     showToast('Agregado al carrito');
 }
@@ -100,6 +136,7 @@ function removeFromCart(id) {
     cart = cart.filter(i => i.id !== id);
     saveCart();
     renderProducts();
+    renderBombillas();
     updateCart();
 }
 
@@ -112,6 +149,7 @@ function updateQuantity(id, change) {
         if (item.quantity > product.stock) { item.quantity = product.stock; showToast('Stock máximo alcanzado'); }
         saveCart();
         renderProducts();
+        renderBombillas();
         updateCart();
     }
 }
@@ -198,7 +236,7 @@ function setupEvents() {
         });
     });
 
-    productsGrid.addEventListener('click', e => {
+    document.addEventListener('click', e => {
         const btn = e.target.closest('.qty-btn-card');
         if (!btn) return;
         const id = parseInt(btn.dataset.id);

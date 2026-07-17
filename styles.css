@@ -104,6 +104,11 @@ a { text-decoration: none; color: inherit; }
 .bombillas-section { background: var(--gray-lightest); }
 .products-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--gray-lighter); }
 .products-header h2 { font-size: 1.5rem; font-weight: 700; }
+.category-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.filter-btn { padding: 8px 18px; border-radius: 20px; border: 2px solid var(--gray-lighter); background: var(--white); color: var(--gray); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+.filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+.filter-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
+.products-grid-inner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .products-filters select { padding: 8px 12px; border: 1px solid var(--gray-lighter); border-radius: var(--radius); font-size: 0.85rem; color: var(--gray); background: var(--white); cursor: pointer; }
 .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .product-card { background: var(--white); border: 1px solid var(--gray-lighter); border-radius: var(--radius); overflow: hidden; transition: 0.2s; position: relative; }
@@ -173,19 +178,19 @@ a { text-decoration: none; color: inherit; }
 
 /* Responsive */
 @media (max-width: 1024px) {
-    .products-grid { grid-template-columns: repeat(3, 1fr); }
+    .products-grid, .products-grid-inner { grid-template-columns: repeat(3, 1fr); }
     .benefits-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
     .nav { display: none; }
     .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
-    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .products-grid, .products-grid-inner { grid-template-columns: repeat(2, 1fr); }
     .benefits-grid { grid-template-columns: 1fr; }
     .hero h1 { font-size: 1.8rem; }
     .products-header { flex-direction: column; gap: 15px; align-items: flex-start; }
 }
 @media (max-width: 480px) {
-    .products-grid { grid-template-columns: 1fr; }
+    .products-grid, .products-grid-inner { grid-template-columns: 1fr; }
     .cart-sidebar { width: 100%; right: -100%; }
     .whatsapp-float { width: 50px; height: 50px; font-size: 1.5rem; bottom: 20px; right: 20px; }
 }
