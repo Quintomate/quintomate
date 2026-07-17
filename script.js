@@ -179,6 +179,18 @@ function setupEvents() {
     closeMenuBtn.addEventListener('click', toggleMobileMenu);
     checkoutBtn.addEventListener('click', sendToWhatsApp);
 
+    const navDropdown = document.querySelector('.nav-dropdown');
+    if (navDropdown) {
+        navDropdown.addEventListener('click', e => {
+            if (e.target.closest('.dropdown-link')) return;
+            e.preventDefault();
+            navDropdown.classList.toggle('open');
+        });
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.nav-dropdown')) navDropdown.classList.remove('open');
+        });
+    }
+
     lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
     lightboxImg.addEventListener('click', e => e.stopPropagation());
 
