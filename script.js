@@ -23,7 +23,6 @@ const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 const closeMenuBtn = document.getElementById('closeMenuBtn');
 const productsGrid = document.getElementById('productsGrid');
-const bombillasGrid = document.getElementById('bombillasGrid');
 const toast = document.getElementById('toast');
 const toastMessage = document.getElementById('toastMessage');
 const lightbox = document.getElementById('lightbox');
@@ -39,14 +38,12 @@ const mateCategories = [
 
 document.addEventListener('DOMContentLoaded', () => {
     renderProducts();
-    renderBombillas();
     updateCart();
     setupEvents();
 });
 
 function renderProducts() {
-    const mates = products.filter(p => p.category !== 'bombillones');
-    const filtered = currentFilter === 'all' ? mates : mates.filter(p => p.category === currentFilter);
+    const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
 
     const filtersHTML = `<div class="category-filters">${mateCategories.map(c =>
         `<button class="filter-btn ${currentFilter === c.id ? 'active' : ''}" data-cat="${c.id}">${c.label}</button>`
@@ -60,19 +57,6 @@ function renderProducts() {
     }));
     document.querySelectorAll('#productsGrid .product-card-btn').forEach(b => b.addEventListener('click', handleProductBtn));
     document.querySelectorAll('#productsGrid .product-image').forEach(img => {
-        img.addEventListener('click', e => {
-            lightboxImg.src = e.target.src;
-            lightboxImg.alt = e.target.alt;
-            lightbox.classList.add('active');
-        });
-    });
-}
-
-function renderBombillas() {
-    const bombillones = products.filter(p => p.category === 'bombillones');
-    bombillasGrid.innerHTML = bombillones.map(p => productCard(p)).join('');
-    document.querySelectorAll('#bombillasGrid .product-card-btn').forEach(b => b.addEventListener('click', handleProductBtn));
-    document.querySelectorAll('#bombillasGrid .product-image').forEach(img => {
         img.addEventListener('click', e => {
             lightboxImg.src = e.target.src;
             lightboxImg.alt = e.target.alt;
@@ -127,7 +111,6 @@ function addToCart(id) {
     inCart ? inCart.quantity++ : cart.push({ ...product, quantity: 1 });
     saveCart();
     renderProducts();
-    renderBombillas();
     updateCart();
     showToast('Agregado al carrito');
 }
@@ -136,7 +119,6 @@ function removeFromCart(id) {
     cart = cart.filter(i => i.id !== id);
     saveCart();
     renderProducts();
-    renderBombillas();
     updateCart();
 }
 
@@ -149,7 +131,6 @@ function updateQuantity(id, change) {
         if (item.quantity > product.stock) { item.quantity = product.stock; showToast('Stock máximo alcanzado'); }
         saveCart();
         renderProducts();
-        renderBombillas();
         updateCart();
     }
 }
