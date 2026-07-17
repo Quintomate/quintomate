@@ -1,10 +1,10 @@
 const products = [
-    { id: 1, name: "Camionero Cuero Negro", price: 26500, img: "img/camionero-cuero-negro.jpg", badge: null, stock: 1, category: "camioneros" },
-    { id: 2, name: "Imperial Cuero Negro", price: 28500, img: "img/imperial-cuero-negro.jpg", badge: null, stock: 5, category: "imperiales" },
-    { id: 3, name: "Mate Galleta", price: 20900, img: "img/mate-galleta.jpg", badge: null, stock: 0, category: "galleta" },
-    { id: 4, name: "Imperial Cuero Crudo", price: 36900, img: "img/imperial-cuero-crudo.jpg", badge: null, stock: 0, category: "imperiales" },
-    { id: 5, name: "Bombillón Acero Inox", price: 14000, img: "img/bombillon-acero-inox.jpg", badge: null, stock: 5, category: "bombillones" },
-    { id: 6, name: "Bombillón Mundial Alpaca", price: 20900, img: "img/bombillon-mundial-alpaca.jpg", badge: null, stock: 0, category: "bombillones" }
+    { id: 1, name: "Camionero Cuero Negro", price: 26500, img: "img/camionero-cuero-negro.jpg", badge: null, stock: 1, category: "camioneros", order: 1 },
+    { id: 2, name: "Imperial Cuero Negro", price: 28500, img: "img/imperial-cuero-negro.jpg", badge: null, stock: 5, category: "imperiales", order: 2 },
+    { id: 3, name: "Mate Galleta", price: 20900, img: "img/mate-galleta.jpg", badge: null, stock: 0, category: "galleta", order: 3 },
+    { id: 4, name: "Imperial Cuero Crudo", price: 36900, img: "img/imperial-cuero-crudo.jpg", badge: null, stock: 0, category: "imperiales", order: 4 },
+    { id: 5, name: "Bombillón Acero Inox", price: 14000, img: "img/bombillon-acero-inox.jpg", badge: null, stock: 5, category: "bombillones", order: 5 },
+    { id: 6, name: "Bombillón Mundial Alpaca", price: 20900, img: "img/bombillon-mundial-alpaca.jpg", badge: null, stock: 0, category: "bombillones", order: 6 }
 ];
 
 const WHATSAPP_NUMBER = "542644456391";
@@ -37,12 +37,32 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEvents();
 });
 
+function sortProducts(list, sortBy) {
+    const sorted = [...list];
+    switch (sortBy) {
+        case 'price-asc': sorted.sort((a, b) => a.price - b.price); break;
+        case 'price-desc': sorted.sort((a, b) => b.price - a.price); break;
+        case 'newest': sorted.sort((a, b) => a.order - b.order); break;
+        case 'oldest': sorted.sort((a, b) => b.order - a.order); break;
+    }
+    return sorted;
+}
+
 function renderAll() {
     renderGrid(productsGrid, products);
-    renderGrid(imperialesGrid, products.filter(p => p.category === 'imperiales'));
-    renderGrid(camionerosGrid, products.filter(p => p.category === 'camioneros'));
-    renderGrid(torpedosGrid, products.filter(p => p.category === 'torpedos'));
-    renderGrid(galletaGrid, products.filter(p => p.category === 'galleta'));
+    renderCategoryGrid('imperialesGrid', 'imperiales');
+    renderCategoryGrid('camionerosGrid', 'camioneros');
+    renderCategoryGrid('torpedosGrid', 'torpedos');
+    renderCategoryGrid('galletaGrid', 'galleta');
+}
+
+function renderCategoryGrid(gridId, category) {
+    const grid = document.getElementById(gridId);
+    const select = document.querySelector(`select[data-grid="${gridId}"]`);
+    const sortBy = select ? select.value : 'default';
+    const list = products.filter(p => p.category === category);
+    const sorted = sortBy === 'default' ? list : sortProducts(list, sortBy);
+    renderGrid(grid, sorted);
 }
 
 function renderGrid(grid, list) {
@@ -193,6 +213,14 @@ function setupEvents() {
 
     lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
     lightboxImg.addEventListener('click', e => e.stopPropagation());
+
+    document.querySelectorAll('.sort-select').forEach(select => {
+        select.addEventListener('change', () => {
+            const gridId = select.dataset.grid;
+            const category = gridId.replace('Grid', '');
+            renderCategoryGrid(gridId, category);
+        });
+    });
 
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', e => {
