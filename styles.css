@@ -129,6 +129,11 @@ a { text-decoration: none; color: inherit; }
 .add-to-cart-btn { width: 100%; padding: 10px; border-radius: var(--radius); border: 1px solid var(--primary); background: var(--white); color: var(--primary); font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
 .add-to-cart-btn:hover { background: var(--primary); color: var(--white); }
 
+.qty-controls { display: flex; align-items: center; justify-content: center; gap: 0; border: 2px solid var(--primary); border-radius: var(--radius); overflow: hidden; width: 100%; }
+.qty-btn-card { width: 40px; height: 38px; border: none; background: var(--primary); color: var(--white); font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.qty-btn-card:hover { background: var(--primary-dark); }
+.qty-card-number { flex: 1; text-align: center; font-weight: 700; font-size: 1rem; color: var(--primary); background: var(--white); }
+
 /* About */
 .about { padding: 60px 0; background: var(--white); text-align: center; }
 .about-content { max-width: 800px; margin: 0 auto; }

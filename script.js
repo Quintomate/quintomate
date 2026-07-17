@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function renderProducts() {
     productsGrid.innerHTML = products.map(p => productCard(p)).join('');
-    document.querySelectorAll('#productsGrid .add-to-cart-btn').forEach(b => b.addEventListener('click', addToCart));
+    document.querySelectorAll('#productsGrid .product-card-btn').forEach(b => b.addEventListener('click', handleProductBtn));
     document.querySelectorAll('#productsGrid .product-image').forEach(img => {
         img.addEventListener('click', e => {
             lightboxImg.src = e.target.src;
@@ -47,31 +47,51 @@ function renderProducts() {
 
 function productCard(p) {
     const outOfStock = p.stock === 0;
+    const inCart = cart.find(i => i.id === p.id);
+    const qty = inCart ? inCart.quantity : 0;
+
+    let btnHTML;
+    if (outOfStock) {
+        btnHTML = `<button class="add-to-cart-btn" disabled style="opacity:0.5;cursor:not-allowed;border-color:#ccc;color:#999"><i class="fas fa-shopping-cart"></i> Sin stock</button>`;
+    } else if (qty > 0) {
+        btnHTML = `
+            <div class="qty-controls">
+                <button class="qty-btn-card" data-id="${p.id}" data-action="minus"><i class="fas fa-minus"></i></button>
+                <span class="qty-card-number">${qty}</span>
+                <button class="qty-btn-card" data-id="${p.id}" data-action="plus"><i class="fas fa-plus"></i></button>
+            </div>`;
+    } else {
+        btnHTML = `<button class="add-to-cart-btn product-card-btn" data-id="${p.id}"><i class="fas fa-shopping-cart"></i> Agregar al carrito</button>`;
+    }
+
     return `
         <div class="product-card">
             ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
-            ${outOfStock ? '<span class="product-badge" style="background:#999;left:auto;right:10px">Sin stock</span>' : ''}
             <div class="product-image"><img src="${p.img}" alt="${p.name}"></div>
             <div class="product-info">
                 <h3 class="product-name">${p.name}</h3>
                 <div class="product-prices">
                     <span class="price-current">$${p.price.toLocaleString('es-AR')}</span>
                 </div>
-                <button class="add-to-cart-btn" data-id="${p.id}" ${outOfStock ? 'disabled style="opacity:0.5;cursor:not-allowed;border-color:#ccc;color:#999"' : ''}>
-                    <i class="fas fa-shopping-cart"></i> ${outOfStock ? 'Sin stock' : 'Agregar al carrito'}
-                </button>
+                ${btnHTML}
             </div>
         </div>`;
 }
 
-function addToCart(e) {
-    const id = parseInt(e.currentTarget.dataset.id);
+function handleProductBtn(e) {
+    const btn = e.currentTarget;
+    const id = parseInt(btn.dataset.id);
+    addToCart(id);
+}
+
+function addToCart(id) {
     const product = products.find(p => p.id === id);
     const inCart = cart.find(i => i.id === id);
     const currentQty = inCart ? inCart.quantity : 0;
     if (currentQty >= product.stock) { showToast('No hay más stock'); return; }
     inCart ? inCart.quantity++ : cart.push({ ...product, quantity: 1 });
     saveCart();
+    renderProducts();
     updateCart();
     showToast('Agregado al carrito');
 }
@@ -79,6 +99,7 @@ function addToCart(e) {
 function removeFromCart(id) {
     cart = cart.filter(i => i.id !== id);
     saveCart();
+    renderProducts();
     updateCart();
 }
 
@@ -90,6 +111,7 @@ function updateQuantity(id, change) {
         if (item.quantity <= 0) { removeFromCart(id); return; }
         if (item.quantity > product.stock) { item.quantity = product.stock; showToast('Stock máximo alcanzado'); }
         saveCart();
+        renderProducts();
         updateCart();
     }
 }
@@ -174,5 +196,14 @@ function setupEvents() {
             const t = document.querySelector(link.getAttribute('href'));
             if (t) { t.scrollIntoView({ behavior: 'smooth' }); if (mobileMenu.classList.contains('active')) toggleMobileMenu(); }
         });
+    });
+
+    productsGrid.addEventListener('click', e => {
+        const btn = e.target.closest('.qty-btn-card');
+        if (!btn) return;
+        const id = parseInt(btn.dataset.id);
+        const action = btn.dataset.action;
+        if (action === 'plus') addToCart(id);
+        else if (action === 'minus') updateQuantity(id, -1);
     });
 }
